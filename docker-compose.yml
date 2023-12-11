@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  node-app:
+    image: node:18
+    volumes:
+      - ./MLabDocker:/MLabDocker
+    working_dir: /MLabDocker/MLAB-Core-Release/server
+    command: ["node", "index.mjs"]
+    environment:
+      - PORT=8001
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+      - "4173:4173"
+      - "3000:3000"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    external: true
