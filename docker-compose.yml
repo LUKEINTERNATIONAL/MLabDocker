@@ -42,6 +42,26 @@ services:
     restart: always
     networks:
       - mynetwork
+  
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - mynetwork
+
+  mlab_api:
+    build:
+      context: ./MLabDocker/mlab_api
+      dockerfile: Dockerfile
+    ports:
+      - "8005:3000"
+    networks:
+      - mynetwork
+    depends_on:
+      - mysql8
+      - redis
 
 networks:
   mynetwork:
