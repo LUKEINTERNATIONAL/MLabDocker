@@ -23,6 +23,15 @@ services:
     networks:
       - mynetwork
 
+  Iblis_reception:
+    image: nginx:latest
+    volumes:
+      - ./MLabDocker/MLAB-Core-Release/iblis_reception:/usr/share/nginx/html
+    ports:
+      - "8002:80"
+    networks:
+      - mynetwork
+
 networks:
   mynetwork:
     external: true
