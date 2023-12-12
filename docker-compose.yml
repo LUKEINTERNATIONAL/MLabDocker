@@ -55,10 +55,13 @@ services:
     image: ruby:3.2.0
     volumes:
       - ./MLabDocker/mlab_api:/app
-    command: bash -c "cd app && gem install bundler && bundle install && rails s -b 0.0.0.0 -p 3000 && bundle exec sidekiq"
+    command: bash -c "apt-get update && apt-get install -y default-mysql-client && cd app && gem install bundler && bundle install && rails s -b 0.0.0.0 -p 3000"
     ports:
       - "8005:3000"
-    restart: always
+    depends_on:
+      - mysql8
+      - redis
+    # restart: always
     networks:
       - mynetwork
 
