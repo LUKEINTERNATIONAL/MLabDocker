@@ -51,17 +51,30 @@ services:
     networks:
       - mynetwork
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - mynetwork
+
   test_API:
     image: ruby:3.2.0
     volumes:
       - ./MLabDocker/mlab_api:/app
-    command: bash -c "apt-get update && apt-get install -y default-mysql-client && cd app && gem install bundler && bundle install && rails s -b 0.0.0.0 -p 3000"
+    command: >
+      bash -c "
+      apt-get update && apt-get install -y default-mysql-client &&
+      cd app && gem install bundler && bundle install &&
+      ./wait-for-it.sh redis:6379 -- ./wait-for-it.sh elasticsearch:9200 -- rails s -b 0.0.0.0 -p 3000"
     ports:
       - "8005:3000"
     depends_on:
       - mysql8
       - redis
-    # restart: always
+      - elasticsearch
     networks:
       - mynetwork
 
