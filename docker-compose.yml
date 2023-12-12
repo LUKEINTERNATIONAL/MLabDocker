@@ -27,7 +27,7 @@ services:
     image: nginx:latest
     volumes:
       - ./MLabDocker/MLAB-Core-Release/iblis_reception:/usr/share/nginx/html
-      # - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf 
     ports:
       - "8002:80"
     networks:
@@ -51,17 +51,16 @@ services:
     networks:
       - mynetwork
 
-  mlab_api:
-    build:
-      context: ./MLabDocker/mlab_api
-      dockerfile: Dockerfile
+  test_API:
+    image: ruby:3.2.0
+    volumes:
+      - ./MLabDocker/mlab_api:/app
+    command: bash -c "cd app && gem install bundler && bundle install && rails s -b 0.0.0.0 -p 3000 && bundle exec sidekiq"
     ports:
       - "8005:3000"
+    restart: always
     networks:
       - mynetwork
-    depends_on:
-      - mysql8
-      - redis
 
 networks:
   mynetwork:
