@@ -64,20 +64,41 @@ services:
     image: ruby:3.2.0
     volumes:
       - ./MLabDocker/mlab_api:/app
+      - ./cupsd.conf:/etc/cups/cupsd.conf
     command: >
       bash -c "
-      apt-get update && apt-get install -y default-mysql-client &&
-      cd app && gem install bundler && bundle install &&
-      ./wait-for-it.sh redis:6379 -- ./wait-for-it.sh elasticsearch:9200 -- rails s -b 0.0.0.0 -p 3000"
+      apt-get update && apt-get install -y default-mysql-client cups &&
+      service cups stop && service cups start &&
+      cd app && gem install bundler && bundle install && rails s -b 0.0.0.0 -p 3000"
     ports:
       - "8005:3000"
+      - "632:631"
     depends_on:
       - mysql8
       - redis
       - elasticsearch
     networks:
       - mynetwork
+  
+  # cups:
+  #   image: anujdatar/cups
+  #   container_name: cups
+  #   restart: unless-stopped
+  #   ports:
+  #       - "633:631"
+  #   devices:
+  #       - /dev/bus/usb:/dev/bus/usb
+  #   environment:
+  #       - CUPSADMIN=batman
+  #       - CUPSPASSWORD=batcave_password
+  #       - TZ="America/Gotham"
+  #   # volumes:
+  #   #     - <persistent-config-path>:/etc/cups
+  #   networks:
+  #     - mynetwork
 
 networks:
   mynetwork:
     external: true
+
+# rm /app/tmp/pids/server.pid &&
