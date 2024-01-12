@@ -60,27 +60,6 @@ services:
     networks:
       - mynetwork
 
-  test_API:
-    image: ruby:3.2.0
-    volumes:
-      - ./MLabDocker/mlab_api:/app
-      - ./cupsd.conf:/etc/cups/cupsd.conf
-    command: >
-      bash -c "
-      apt-get update && apt-get install -y default-mysql-client cups &&
-      service cups stop && service cups start && echo 'root:root' | chpasswd &&
-      cd app && gem install bundler && bundle install && rails s -b 0.0.0.0 -p 3000"
-    # ports:
-    #   - "8005:3000"
-    #   - "632:631"
-    depends_on:
-      - mysql8
-      - redis
-      - elasticsearch
-    # networks:
-    #   - mynetwork
-    network_mode: host
-
 
 networks:
   mynetwork:
