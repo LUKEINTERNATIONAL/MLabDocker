@@ -4,8 +4,8 @@ services:
   ibilis_web_app:
     image: node:18
     volumes:
-      - ./MLabDocker:/MLabDocker
-    working_dir: /MLabDocker/MLAB-Core-Release/server
+       - ./MLAB-Core-Release:/MLAB-Core-Release
+    working_dir: /MLAB-Core-Release/server
     command: ["node", "index.mjs"]
     environment:
       - PORT=8001
@@ -17,7 +17,7 @@ services:
   Iblis_docs:
     image: nginx:latest
     volumes:
-      - ./MLabDocker/MLAB-Core-Release/vite:/usr/share/nginx/html
+      - ./MLAB-Core-Release/vite:/usr/share/nginx/html
     ports:
       - "4173:80"
     networks:
@@ -26,7 +26,7 @@ services:
   Iblis_reception:
     image: nginx:latest
     volumes:
-      - ./MLabDocker/MLAB-Core-Release/iblis_reception:/usr/share/nginx/html
+      - ./MLAB-Core-Release/iblis_reception:/usr/share/nginx/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf 
     ports:
       - "8002:80"

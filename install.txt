@@ -1,0 +1,9 @@
+sudo docker network create mynetwork
+sudo apt install net-tools
+sudo apt install iputils-ping
+
+chmod 0664 /var/www/MLabDocker/MLabDocker/mlab_api/log/development.log
+chmod 1777 /var/www/MLabDocker/MLabDocker/mlab_api/tmp/pids/
+sudo chown -R lims:lims /var/www/MLabDocker/MLabDocker/mlab_api/
+
+sudo systemctl daemon-reload
