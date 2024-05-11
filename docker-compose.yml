@@ -19,7 +19,7 @@ services:
     volumes:
       - ./MLAB-Core-Release/vite:/usr/share/nginx/html
     ports:
-      - "4173:80"
+      - "5173:80"
     networks:
       - mynetwork
 
