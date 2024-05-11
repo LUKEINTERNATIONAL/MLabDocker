@@ -23,6 +23,15 @@ services:
     networks:
       - mynetwork
 
+  Iblis_machine_integration:
+    image: nginx:latest
+    volumes:
+      - ./MLAB-Core-Release/machine-integration:/usr/share/nginx/html
+    ports:
+      - "5181:80"
+    networks:
+      - mynetwork
+
   Iblis_reception:
     image: nginx:latest
     volumes:
